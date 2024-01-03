@@ -60,10 +60,11 @@ class NeurJudge(nn.Module):
         self.id2charge = json.load(open('./id2charge.json'))
         self.data_size = 200
         self.hidden_dim = 150
-
+        
         self.embs = nn.Embedding(339503, 200)
-        self.embs.weight.data.copy_(embedding)
-        self.embs.weight.requires_grad = False
+        if len(embedding)==339503:
+            self.embs.weight.data.copy_(embedding)
+            self.embs.weight.requires_grad = False
 
         self.encoder = nn.GRU(self.data_size,self.hidden_dim, batch_first=True, bidirectional=True)
         self.code_wise = Code_Wise_Attention()
